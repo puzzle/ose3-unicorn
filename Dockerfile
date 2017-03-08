@@ -2,14 +2,13 @@ FROM centos/ruby-23-centos7
 
 USER root
 WORKDIR /usr/src/app
-RUN yum -y update
-
-RUN yum install -y epel-release
-RUN yum install -y nginx mysql-devel
-RUN curl -sL https://rpm.nodesource.com/setup_7.x | bash -
-RUN yum install -y nodejs
-
-RUN scl enable rh-ruby23 "gem install foreman"
+RUN yum -y update && \
+    yum install -y epel-release && \
+    yum install -y nginx mysql-devel && \
+    curl -sL https://rpm.nodesource.com/setup_7.x | bash - && \
+    yum install -y nodejs && \
+    scl enable rh-ruby23 "gem install foreman" && \
+    mkdir -p /usr/src/config
 
 # Install the latest postgresql lib for pg gem
 # RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
@@ -17,7 +16,6 @@ RUN scl enable rh-ruby23 "gem install foreman"
 #     DEBIAN_FRONTEND=noninteractive \
 #     apt-get install -y --force-yes libpq-dev
 
-RUN mkdir -p /usr/src/config
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY unicorn.rb /usr/src/config/unicorn.rb
 COPY Procfile /usr/src/config/Procfile
