@@ -22,5 +22,6 @@ COPY nginx.conf /etc/nginx/nginx.conf
 COPY unicorn.rb /usr/src/config/unicorn.rb
 COPY Procfile /usr/src/config/Procfile
 
+USER 1001
 ENV RAILS_ENV development
 CMD foreman start -f /usr/src/config/Procfile -d /usr/src/app
