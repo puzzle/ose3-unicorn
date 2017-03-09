@@ -12,7 +12,7 @@ Example Dockerfile:
 
 ```
 FROM puzzle/ose3-unicorn
-COPY . /usr/src/app
+COPY . /opt/app-root/src
 RUN scl enable rh-ruby23 "bundle install --path .bundle"
 ```
 

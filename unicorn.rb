@@ -1,4 +1,4 @@
-app_dir = "/usr/src/app"
+app_dir = "/opt/app-root/src"
 
 working_directory app_dir
 

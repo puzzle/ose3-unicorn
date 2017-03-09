@@ -1,15 +1,15 @@
 FROM centos/ruby-23-centos7
 
 USER root
-WORKDIR /usr/src/app
-RUN yum -y update
-
-RUN yum install -y epel-release
-RUN yum install -y nginx mysql-devel
-RUN curl -sL https://rpm.nodesource.com/setup_7.x | bash -
-RUN yum install -y nodejs
-
-RUN scl enable rh-ruby23 "gem install foreman"
+WORKDIR /opt/app-root/src
+RUN yum -y update && \
+    yum install -y epel-release && \
+    yum install -y nginx mysql-devel && \
+    curl -sL https://rpm.nodesource.com/setup_7.x | bash - && \
+    yum install -y nodejs && \
+    scl enable rh-ruby23 "gem install foreman" && \
+    mkdir -p /opt/app-root/etc && \
+    mkdir -p /opt/app-root/bin
 
 # Install the latest postgresql lib for pg gem
 # RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
@@ -17,12 +17,12 @@ RUN scl enable rh-ruby23 "gem install foreman"
 #     DEBIAN_FRONTEND=noninteractive \
 #     apt-get install -y --force-yes libpq-dev
 
-RUN mkdir -p /usr/src/config
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY unicorn.rb /usr/src/config/unicorn.rb
-COPY Procfile /usr/src/config/Procfile
+COPY nginx.conf /opt/app-root/etc/nginx.conf
+COPY unicorn.rb /opt/app-root/etc/unicorn.rb
+COPY Procfile /opt/app-root/etc/Procfile
 
+USER 1001
 ENV RAILS_ENV development
-CMD foreman start -f /usr/src/config/Procfile -d /usr/src/app
-ONBUILD COPY . /usr/src/app
+CMD foreman start -f /opt/app-root/etc/Procfile -d /opt/app-root/src
+ONBUILD COPY . /opt/app-root/src
 ONBUILD RUN scl enable rh-ruby23 "bundle install --path .bundle"
