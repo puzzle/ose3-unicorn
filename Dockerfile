@@ -2,11 +2,9 @@ FROM centos/ruby-23-centos7
 
 USER root
 WORKDIR /opt/app-root/src
-RUN yum -y update && \
-    yum install -y epel-release && \
+RUN yum install -y epel-release && \
+    yum -y update && \
     yum install -y nginx mysql-devel && \
-    curl -sL https://rpm.nodesource.com/setup_7.x | bash - && \
-    yum install -y nodejs && \
     scl enable rh-ruby23 "gem install foreman" && \
     mkdir -p /opt/app-root/etc && \
     mkdir -p /opt/app-root/bin
