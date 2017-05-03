@@ -6,7 +6,7 @@ RUN yum install -y epel-release && \
     yum -y update && \
     yum install -y nginx mysql-devel && \
     scl enable rh-ruby23 "gem install foreman" && \
-    mkdir -p /opt/app-root/etc && \
+    mkdir -p /opt/app-root/etc/nginx && \
     mkdir -p /opt/app-root/bin
 
 # Install the latest postgresql lib for pg gem
